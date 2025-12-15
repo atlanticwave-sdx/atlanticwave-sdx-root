@@ -1,0 +1,33 @@
+version: "3.9"
+
+services:
+
+  sdx-controller:
+    build: services/sdx-controller
+    container_name: sdx-controller
+    ports:
+      - "8000:8000"
+
+  sdx-lc:
+    build: services/sdx-lc
+    container_name: sdx-lc
+    ports:
+      - "8001:8001"
+
+  pce:
+    build: services/pce
+    container_name: pce
+    ports:
+      - "8002:8002"
+
+  kytos-sdx:
+    build: services/kytos-sdx
+    container_name: kytos-sdx
+    ports:
+      - "8003:8003"
+
+  sdx-oxp-integrator:
+    build: services/sdx-oxp-integrator
+    container_name: sdx-oxp-integrator
+    ports:
+      - "8004:8004"
