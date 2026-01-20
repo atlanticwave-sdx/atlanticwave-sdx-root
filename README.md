@@ -1,4 +1,4 @@
-# AtlanticWave-SDX Root Repository
+# AtlanticWave-SDX Release Repository
 
 ## Purpose
 
