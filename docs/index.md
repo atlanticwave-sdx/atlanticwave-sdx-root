@@ -14,6 +14,5 @@ Run AtlanticWave-SDX using the published container images and the release compos
 Clone the code and use the development workflow to build/run from source.
 
 ## Docs
-- Release process: ./release-process.md
-- Releases: ./releases/
-
+- [Release process](release-process.md)
+- [Releases](releases/)
