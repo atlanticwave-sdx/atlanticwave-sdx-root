@@ -1,33 +1,31 @@
 version: "3.9"
 
 services:
-
   sdx-controller:
-    build:
-      context: services/sdx-controller
+    image: ghcr.io/atlanticwave-sdx/sdx-controller:${SDX_VERSION}
     container_name: sdx-controller
     ports:
       - "8000:8000"
 
   sdx-lc:
-    build:
-      context: services/sdx-lc
+    image: ghcr.io/atlanticwave-sdx/sdx-lc:${SDX_VERSION}
     container_name: sdx-lc
     ports:
       - "8001:8001"
 
   kytos-sdx:
-    image: amlight/kytos:latest
+    image: ghcr.io/atlanticwave-sdx/kytos-sdx:${SDX_VERSION}
     container_name: kytos-sdx
     ports:
       - "8003:8003"
 
   pce:
-    image: alpine:latest
+    image: ghcr.io/atlanticwave-sdx/pce:${SDX_VERSION}
     container_name: pce
     command: ["sh", "-c", "echo 'PCE image placeholder'; sleep infinity"]
 
   sdx-oxp-integrator:
-    image: alpine:latest
+    image: ghcr.io/atlanticwave-sdx/sdx-oxp-integrator:${SDX_VERSION}
     container_name: sdx-oxp-integrator
     command: ["sh", "-c", "echo 'OXP Integrator placeholder'; sleep infinity"]
+
