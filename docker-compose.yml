@@ -19,11 +19,6 @@ services:
     ports:
       - "8003:8003"
 
-  pce:
-    image: ghcr.io/atlanticwave-sdx/pce:${SDX_VERSION}
-    container_name: pce
-    command: ["sh", "-c", "echo 'PCE image placeholder'; sleep infinity"]
-
   sdx-oxp-integrator:
     image: ghcr.io/atlanticwave-sdx/sdx-oxp-integrator:${SDX_VERSION}
     container_name: sdx-oxp-integrator
