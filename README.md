@@ -2,42 +2,67 @@
 
 ## Purpose
 
-This repository is the system-level orchestration and release repository for the AtlanticWave-SDX platform.
+This repository is the **system-level release and orchestration repository**
+for the AtlanticWave-SDX platform.
 
-It does not contain application code.
+It does **not** contain application code.
+
+---
+
+## What This Repository Does
+
+- Aggregates AtlanticWave-SDX component repositories using Git submodules
+- Pins exact component versions for each platform release
+- Defines platform deployment via Docker Compose
+- Serves as the **single source of truth** for AtlanticWave-SDX platform releases
+- Enables reproducible deployments and rollbacks via Git tags
+
+---
+
+## What This Repository Does NOT Do
+
+- Does not build application code
+- Does not modify component repositories
+- Does not define development workflows for individual components
+- Does not publish container images
 
 ---
 
 ## Repository Structure
 
 ```
-atlanticwave-sdx-root/
-├── services/           # Git submodules
-├── docker-compose.yml  # Platform orchestration
+sdx-release/
+├── services/            # Git submodules (pinned component repositories)
+├── docker-compose.yml   # Platform orchestration
+├── docs/                # Human-facing documentation (GitHub Pages)
+│   ├── index.md
+│   ├── release-process.md
+│   └── releases/
 ├── .gitmodules
 └── README.md
 ```
 
 ---
 
-## What This Repository Does
+## Documentation
 
-- Aggregates SDX repositories using Git submodules
-- Defines system-wide deployment via Docker Compose
-- Provides a single authoritative SDX release
-- Enables reproducible deployments and rollbacks
+Human-facing documentation lives under `docs/` and is published via GitHub Pages.
+
+- Overview and usage: `docs/index.md`
+- Release process: `docs/release-process.md`
+- Platform releases: `docs/releases/`
 
 ---
 
 ## Cloning the Repository
 
-Clone with submodules:
+You must clone with submodules:
 
 ```bash
-git clone --recurse-submodules https://github.com/atlanticwave-sdx/atlanticwave-sdx-root.git
+git clone --recurse-submodules https://github.com/atlanticwave-sdx/sdx-release.git
 ```
 
-If already cloned incorrectly:
+If already cloned without submodules:
 
 ```bash
 git submodule update --init --recursive
@@ -45,183 +70,104 @@ git submodule update --init --recursive
 
 ---
 
-## Adding a New SDX Component
+## Using a Platform Release (Operators)
 
-If a new SDX repository is created:
+A platform release is defined by a **Git tag** in this repository
+(for example: `v2026.1.1`).
 
 ```bash
-git submodule add https://github.com/atlanticwave-sdx/<new-repo>.git services/<new-repo>
-git add .gitmodules services/<new-repo>
-git commit -m "Add <new-repo> as SDX component"
-git push
+git fetch --tags
+git checkout v2026.1.1
+
+git submodule sync --recursive
+git submodule update --init --recursive
+
+export SDX_VERSION=v2026.1.1
+docker compose pull
+docker compose up -d
 ```
 
-Optionally update `docker-compose.yml`.
+Stop the platform:
+
+```bash
+docker compose down
+```
 
 ---
 
-## Daily Development Workflow
+## Platform Releases
 
-### Work on a Component
+- Platform releases use a **year-based versioning scheme**
+  (for example: `v2026.1.1`)
+- Each tag pins:
+  - Exact submodule commits
+  - Corresponding published container images
+  - A reproducible Docker Compose deployment
 
-```bash
-cd services/sdx-controller
-git checkout main
-git pull
-# work on component
-git commit -am "Change description"
-git push
+Release notes and instructions are documented under:
+
+```
+docs/releases/
 ```
 
-### Update the Root Repository Pointer
+---
+
+## Updating Component Versions (Maintainers)
+
+To update a component for a future release:
+
+```bash
+cd services/<component>
+git fetch
+git checkout <desired-commit-or-tag>
+```
+
+Then update the pointer in this repository:
 
 ```bash
 cd ../../
-git add services/sdx-controller
-git commit -m "Update sdx-controller submodule"
+git add services/<component>
+git commit -m "Update <component> submodule for next release"
 git push
 ```
 
-This step is REQUIRED.
+This **does not** affect existing platform release tags.
 
 ---
 
-## Creating a Unified SDX Release
+## Creating a New Platform Release
 
-From the root repository:
+Creating a release means tagging this repository **after validation**:
 
 ```bash
-git tag v<RELEASE>
-git push origin v<RELEASE>
+git tag v2026.1.2
+git push origin v2026.1.2
 ```
 
-This tag defines:
-
-- One SDX platform version  
-- Exact commits of all components  
-- A reproducible system state  
+See `docs/release-process.md` for the authoritative release procedure.
 
 ---
 
-## GHCR Release Workflow
+## Why This Is Safe and Reversible
 
-To build and publish Docker images:
+This repository uses Git submodules.
 
-```bash
-# Step 1: Identify workflow commit
-git log -1 --pretty=oneline -- .github/workflows/publish-images.yml
-# Record commit hash as WORKFLOW_COMMIT
+That means:
+- Component repositories remain independent
+- No history is rewritten
+- No files are moved
+- Existing releases are immutable once tagged
 
-# Step 2: Delete old temporary tag
-git tag -d temp-release
-git push origin :refs/tags/temp-release
-
-# Step 3: Create temporary tag to trigger workflow
-git tag temp-release <WORKFLOW_COMMIT>
-git push origin temp-release
-
-# Step 4: Monitor workflow in GitHub Actions
-# Wait for all 4 jobs to succeed:
-# publish-sdx-controller, publish-sdx-lc, publish-sdx-oxp-integrator, publish-kytos-sdx
-
-# Step 5: Pull built images locally
-docker pull ghcr.io/atlanticwave-sdx/sdx-controller:temp-release
-docker pull ghcr.io/atlanticwave-sdx/sdx-lc:temp-release
-docker pull ghcr.io/atlanticwave-sdx/sdx-oxp-integrator:temp-release
-docker pull ghcr.io/atlanticwave-sdx/kytos-sdx:temp-release
-
-# Step 6: Retag images for official release
-docker tag ghcr.io/atlanticwave-sdx/sdx-controller:temp-release ghcr.io/atlanticwave-sdx/sdx-controller:v<RELEASE>
-docker tag ghcr.io/atlanticwave-sdx/sdx-lc:temp-release ghcr.io/atlanticwave-sdx/sdx-lc:v<RELEASE>
-docker tag ghcr.io/atlanticwave-sdx/sdx-oxp-integrator:temp-release ghcr.io/atlanticwave-sdx/sdx-oxp-integrator:v<RELEASE>
-docker tag ghcr.io/atlanticwave-sdx/kytos-sdx:temp-release ghcr.io/atlanticwave-sdx/kytos-sdx:v<RELEASE>
-
-# Step 7: Push official release images to GHCR
-docker push ghcr.io/atlanticwave-sdx/sdx-controller:v<RELEASE>
-docker push ghcr.io/atlanticwave-sdx/sdx-lc:v<RELEASE>
-docker push ghcr.io/atlanticwave-sdx/sdx-oxp-integrator:v<RELEASE>
-docker push ghcr.io/atlanticwave-sdx/kytos-sdx:v<RELEASE>
-
-# Step 8: Optional cleanup
-docker rmi ghcr.io/atlanticwave-sdx/sdx-controller:temp-release
-docker rmi ghcr.io/atlanticwave-sdx/sdx-lc:temp-release
-docker rmi ghcr.io/atlanticwave-sdx/sdx-oxp-integrator:temp-release
-docker rmi ghcr.io/atlanticwave-sdx/kytos-sdx:temp-release
-
-git tag -d temp-release
-git push origin :refs/tags/temp-release
-```
-
-- Temporary tag is only for triggering the workflow, not for production use  
-- Ensure the temporary tag points to a commit containing the workflow  
-- Official release images must always be retagged with the proper release version
-
----
-
-## Operator Instructions — Pulling Images
-
-```bash
-docker pull ghcr.io/atlanticwave-sdx/sdx-controller:v<RELEASE>
-docker pull ghcr.io/atlanticwave-sdx/sdx-lc:v<RELEASE>
-docker pull ghcr.io/atlanticwave-sdx/sdx-oxp-integrator:v<RELEASE>
-docker pull ghcr.io/atlanticwave-sdx/kytos-sdx:v<RELEASE>
-```
-
-- Replace `<RELEASE>` with the release version, e.g., `2026.1.1`  
-- Authentication may be required:
-
-```bash
-echo "<PAT>" | docker login ghcr.io --username <GITHUB_USERNAME> --password-stdin
-```
-
----
-
-## Verify Deployment (Optional)
-
-```bash
-docker compose build
-docker compose up -d
-docker compose ps
-```
-
----
-
-## Reversibility
-
-- Uses Git submodules → nothing is overwritten  
-- Existing repositories remain unchanged  
-- Tags or branches are not modified automatically  
-
----
-
-### Reversal Scenarios
-
-#### Delete Everything
-- Remove the root repository → full rollback
-
-#### Remove a Component
-```bash
-git submodule deinit -f services/<repo>
-git rm -f services/<repo>
-rm -rf .git/modules/services/<repo>
-git commit -m "Remove <repo>"
-git push
-```
-
-#### Undo a Tag
-```bash
-git tag -d vX.Y.Z
-git push origin :refs/tags/vX.Y.Z
-```
+Worst case scenario:
+**Delete this repository.**
+Nothing else is affected.
 
 ---
 
 ## Final Note
 
-The repository stores only:
+This repository exists to make AtlanticWave-SDX **deployable, reproducible,
+and auditable** at the platform level.
 
-- Repository URLs  
-- Pointers to exact commits  
-
-Everything else is preserved. Official releases and operator images remain accessible.
+It is intentionally minimal.
 
