@@ -16,3 +16,9 @@
 [submodule "services/sdx-oxp-integrator"]
 	path = services/sdx-oxp-integrator
 	url = https://github.com/atlanticwave-sdx/sdx-oxp-integrator.git
+[submodule "services/sdx-meican"]
+	path = services/sdx-meican
+	url = https://github.com/atlanticwave-sdx/sdx-meican.git
+[submodule "services/oess-sdx"]
+	path = services/oess-sdx
+	url = https://github.com/atlanticwave-sdx/oess-sdx.git
