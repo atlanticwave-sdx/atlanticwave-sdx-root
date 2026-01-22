@@ -6,7 +6,7 @@ from the `sdx-release` repository.
 ## Definition
 
 An AtlanticWave-SDX release is a **Git tag in this repository** (for example,
-`v2026.1.1`) that:
+`v2026.1.0`) that:
 
 - Pins the exact versions of all platform components via Git submodules
 - Corresponds to published container images for those components
@@ -34,7 +34,7 @@ together as a platform.
    - Validate the stack using `docker compose` and the `SDX_VERSION` variable.
 
 4. **Create the platform tag**
-   - Tag the repository using the year-based scheme (for example, `v2026.1.1`).
+   - Tag the repository using the year-based scheme (for example, `v2026.1.0`).
    - Push the tag to the remote repository.
 
 5. **Publish documentation**
