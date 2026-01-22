@@ -1,8 +1,13 @@
-# AtlanticWave-SDX Platform Releases
+---
+title: Releases
+nav_order: 2
+has_children: true
+---
 
-Each platform release corresponds to a **Git tag** in the `sdx-release` repository.
+# AtlanticWave-SDX Platform Releases
 
 ## Available releases
 
-- [v2026.1.1](v2026.1.1.md)
+- [2022.1.0](v2022.1.0/)
+- [2026.1.1](v2026.1.1/)
 
