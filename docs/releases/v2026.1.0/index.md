@@ -7,7 +7,7 @@ nav_order: 2026010
 # AW-SDX 2026.1.0
 
 **Release Date:** 01/22/2026  
-**Tag:** 3.2.0  
+**Component Baseline:** v3.2.0  
 **Automation:** GitHub Actions (CI/CD)  
 **Distribution:** Versioned source + container images  
 **Scope:** SDX Controller, SDX-LC, Kytos-SDX, OESS-SDX, PCE, Data Models, Messaging/Telemetry
