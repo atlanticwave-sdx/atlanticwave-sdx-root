@@ -175,7 +175,7 @@ jobs:
       - name: Build & push
         uses: docker/build-push-action@v6
         with:
-          context: services/sdx-meican
-          file: services/sdx-meican/docker_for_build/Dockerfile
+          context: sdx-meican
+          file: sdx-meican/docker_for_build/Dockerfile
           push: true
           tags: ${{ env.REGISTRY }}/atlanticwave-sdx/sdx-meican:${{ env.IMAGE_TAG }}
