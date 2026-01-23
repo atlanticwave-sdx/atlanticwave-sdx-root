@@ -16,7 +16,7 @@ nav_order: 2026010
 
 ## Major Changes
 
-AW-SDX 2026.1.0 is a coordinated software release of the AtlanticWave-SDX stack that strengthens multi-domain topology exchange and point-to-point L2VPN service provisioning across integrated controller environments. This release emphasizes interoperability through the official Topology Data Model, operational compatibility through versioned and legacy APIs, and improved robustness in topology loading, error handling, and control-plane messaging. Release artifacts are built and published through automated CI/CD workflows.
+AW-SDX 2026.1.0 is a coordinated software release of the AtlanticWave-SDX platform that brings together the core components used for multi-domain topology exchange and point-to-point L2VPN services across heterogeneous controller environments. The release focuses on consistent use of the SDX Topology Data Model, continued support for both versioned and legacy service APIs, and improved stability in topology handling, error processing, and control-plane messaging. Alongside the SDX Controller, SDX Local Controller (SDX-LC), Kytos-SDX, OESS-SDX, and the Path Computation Engine (PCE), this release includes SDX-MEICAN, a web-based management environment for Dynamic Circuit Networks (DCNs) that allows users to request time-bounded circuits between defined endpoints, supports NSI-based inter-domain coordination, and applies operator-defined workflows for provisioning and approval. The release also includes the SDX OXP Integrator, which supports mediation and interoperability at exchange points between participating controller domains. All release artifacts are built and published through automated GitHub Actions workflows.
 
 ---
 
@@ -29,12 +29,40 @@ AW-SDX 2026.1.0 is a coordinated software release of the AtlanticWave-SDX stack 
 - Improved RabbitMQ-based control-plane messaging robustness.
 - Non-blocking topology initialization.
 
+### Path Computation Engine (PCE)
+
+- Constrained shortest-path computation and domain-aware path breakdowns.
+- Refactored PCE logic with improved modularity and deployability.
+- CI linting, formatting, and coverage improvements.
+
 ### SDX Local Controller (SDX-LC)
 
 - Domain-facing endpoints for controller integrations and orchestration.
 - Improved exception handling in LC message processing.
 - Updated controller API usage when placing connections.
 - Correct topology return handling.
+
+### Data Models and APIs
+
+- Official SDX Topology Data Model.
+- SDX Port and SDX Link abstractions.
+- Improved MongoDB document consistency.
+- Topology parsing, validation, and exchange utilities.
+
+### SDX OXP Integrator
+
+- Mediation between SDX and exchange controllers.
+- Interoperability across controller platforms.
+- Topology information exchange.
+- Service coordination at exchange points.
+
+### SDX-MEICAN
+
+- Web-based management for Dynamic Circuit Networks.
+- User requests for time-bounded circuits.
+- Endpoint and bandwidth specification.
+- Policy-based provisioning workflows.
+- Integrated circuit monitoring.
 
 ### Kytos-SDX NApp
 
@@ -52,24 +80,11 @@ AW-SDX 2026.1.0 is a coordinated software release of the AtlanticWave-SDX stack 
 - L2VPN provisioning via SDX-LC with legacy compatibility.
 - VLAN range and NNI metadata support.
 
-### Path Computation Engine (PCE)
-
-- Constrained shortest-path computation and domain-aware path breakdowns.
-- Refactored PCE logic with improved modularity and deployability.
-- CI linting, formatting, and coverage improvements.
-
 ### Messaging and Telemetry (RabbitMQ / BAPM)
 
 - RabbitMQ-based messaging for SDX control-plane communications.
 - Improved consumer robustness and error handling.
 - Telemetry and BAPM integration points.
-
-### Data Models and APIs
-
-- Official SDX Topology Data Model.
-- SDX Port and SDX Link abstractions.
-- Improved MongoDB document consistency.
-- Topology parsing, validation, and exchange utilities.
 
 ---
 
@@ -94,6 +109,13 @@ AW-SDX 2026.1.0 is a coordinated software release of the AtlanticWave-SDX stack 
 | Non-blocking startup | Improved initialization behavior |
 | MongoDB usage | Persistent state management |
 
+### Path Computation Engine (PCE)
+
+| Changelog Evidence | Release Claim |
+|---|---|
+| PCE refactor | Multi-domain path computation |
+| CI improvements | Reliability and maintainability |
+
 ### SDX Local Controller (SDX-LC)
 
 | Changelog Evidence | Release Claim |
@@ -101,6 +123,22 @@ AW-SDX 2026.1.0 is a coordinated software release of the AtlanticWave-SDX stack 
 | Updated Kytos API usage | Domain-specific orchestration |
 | Exception handling | Robust control-plane messaging |
 | Correct topology returns | Consistent topology representation |
+
+### SDX OXP Integrator
+
+| Changelog Evidence | Release Claim |
+|---|---|
+| OXP mediation logic |	Exchange-point interoperability support |
+|Topology and service data handling | Cross-domain information exchange |
+|Controller integration updates | Coordinated operation across heterogeneous controllers |
+
+### SDX-MEICAN
+
+| Changelog Evidence | Release Claim |
+|---|---|
+| DCN circuit request workflows | User-driven, time-bounded circuit management |
+| Policy-based provisioning logic | Operator-controlled automation and approval |
+| Integrated monitoring features | Unified circuit status and traffic visibility |
 
 ### Kytos-SDX NApp
 
@@ -116,13 +154,6 @@ AW-SDX 2026.1.0 is a coordinated software release of the AtlanticWave-SDX stack 
 |---|---|
 | OESS integration | Operational SDX interoperability |
 | Topology export | Cross-controller topology exchange |
-
-### Path Computation Engine (PCE)
-
-| Changelog Evidence | Release Claim |
-|---|---|
-| PCE refactor | Multi-domain path computation |
-| CI improvements | Reliability and maintainability |
 
 ### CI/CD and Packaging
 

@@ -36,8 +36,13 @@ sdx-release/
 ├── docker-compose.yml   # Platform orchestration
 ├── docs/                # Human-facing documentation (GitHub Pages)
 │   ├── index.md
-│   ├── release-process.md
-│   └── releases/
+│   ├── release-process
+│       ├── index.md
+│   └── releases
+│       ├── v2022.1.0
+│           ├── index.md
+│       ├── v2026.1.0
+│           ├── index.md
 ├── .gitmodules
 └── README.md
 ```
@@ -73,16 +78,16 @@ git submodule update --init --recursive
 ## Using a Platform Release (Operators)
 
 A platform release is defined by a **Git tag** in this repository
-(for example: `v2026.1.1`).
+(for example: `v2026.1.0`).
 
 ```bash
 git fetch --tags
-git checkout v2026.1.1
+git checkout v2026.1.0
 
 git submodule sync --recursive
 git submodule update --init --recursive
 
-export SDX_VERSION=v2026.1.1
+export SDX_VERSION=v2026.1.0
 docker compose pull
 docker compose up -d
 ```
@@ -98,7 +103,7 @@ docker compose down
 ## Platform Releases
 
 - Platform releases use a **year-based versioning scheme**
-  (for example: `v2026.1.1`)
+  (for example: `v2026.1.0`)
 - Each tag pins:
   - Exact submodule commits
   - Corresponding published container images
@@ -140,8 +145,8 @@ This **does not** affect existing platform release tags.
 Creating a release means tagging this repository **after validation**:
 
 ```bash
-git tag v2026.1.2
-git push origin v2026.1.2
+git tag v2026.1.1
+git push origin v2026.1.1
 ```
 
 See `docs/release-process.md` for the authoritative release procedure.

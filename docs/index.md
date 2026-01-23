@@ -23,6 +23,6 @@ Use the release documentation to identify component versions and reproduce build
 
 ## Documentation
 
-- [Release process](release-process.md)
+- [Process](release-process.md)
 - [Releases](releases/)
 
