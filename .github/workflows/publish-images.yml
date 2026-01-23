@@ -151,7 +151,13 @@ jobs:
       - name: Checkout (with submodules)
         uses: actions/checkout@v4
         with:
-          submodules: true
+          submodules: false
+          fetch-depth: 0
+
+      - name: Init sdx-meican submodule (non-recursive)
+        run: |
+          git submodule sync -- services/sdx-meican
+          git submodule update --init --depth 1 services/sdx-meican
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
